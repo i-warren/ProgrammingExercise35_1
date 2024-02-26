@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 public class Exercise35_1 extends Application {
 
-    @Override   //Overrides start in Application class
+    @Override   //Overrides start in the Application class
     public void start(Stage stage) {
         // creates new DBConnectionPane
         DBConnectionPane connectionPane = new DBConnectionPane();

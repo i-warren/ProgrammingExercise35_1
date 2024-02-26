@@ -155,9 +155,9 @@ public class DBConnectionPane extends BorderPane {
                 }
             }
             long end = System.currentTimeMillis();
-            status.setText("Non-Batch Update succeeded");
-            center.appendText("Non-Batch update completed\n");
-            center.appendText("The elapsed Time is " + (end - start) + "\n\n");
+            status.setText("Non-Batch Update succeeded ");
+            center.appendText("Non-Batch update completed\n ");
+            center.appendText("The elapsed Time is " + (end - start) + "\n\n ");
         });
     }
 }
