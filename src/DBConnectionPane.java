@@ -7,11 +7,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-/**
- *
- */
+
 public class DBConnectionPane extends BorderPane {
+    // declare new Connection
     Connection connection;
+
     public static final String QUERY =
             "insert into Temp (num1, num2, num3) "
                     + " values (!, @, #);";
@@ -31,8 +31,10 @@ public class DBConnectionPane extends BorderPane {
         setTop(status);
         BorderPane.setAlignment(status, Pos.CENTER);
 
+        // create center GridPane
         GridPane center = new GridPane();
 
+        // Create Labels and Fields with preferred widths
         center.add(new Label("JDBC Drive "), 0, 0);
         TextField tfJDBC = new TextField();
         tfJDBC.setPrefColumnCount(20);
@@ -53,12 +55,15 @@ public class DBConnectionPane extends BorderPane {
         tfPassword.setPrefColumnCount(20);
         center.add(tfPassword, 1, 3);
 
+        // Set Center
         setCenter(center);
 
+        // create Connect to database button
         Button btnConnectToDB = new Button("Connect to DB");
         BorderPane.setAlignment(btnConnectToDB, Pos.TOP_RIGHT);
         setBottom(btnConnectToDB);
 
+        // set action for button
         btnConnectToDB.setOnAction(e ->
         {
             try {
@@ -78,32 +83,37 @@ public class DBConnectionPane extends BorderPane {
         });
     }
 
-    public void drawTesting()
-    {
+    public void drawTesting() {
+
         getChildren().clear();
         Label status = new Label("");
         Button connectToDB = new Button("Connect to Database");
         HBox top = new HBox(5, status, connectToDB);
         setTop(top);
 
+        // create text area
         TextArea center = new TextArea();
         setCenter(center);
 
+        // create buttons for batch and non-batch updates
         Button batchUpdate = new Button("Batch Update");
         Button nonBatchUpdate = new Button("Non-Batch Update");
         HBox bottom = new HBox(10, batchUpdate, nonBatchUpdate);
         bottom.setAlignment(Pos.CENTER);
         setBottom(bottom);
 
+        // set action for conncet to database button
         connectToDB.setOnAction(e -> draw());
 
+        // set action for batch update button
         batchUpdate.setOnAction(e ->
         {
             status.setText("");
             long start = System.currentTimeMillis();
-            try
-            {
+            try {
+                // creates statement for batch
                 Statement statement = connection.createStatement();
+                // loop to add to batch
                 for (int i = 0; i < 1_000; i++)
                 {
                     String query = QUERY.replace("!", Math.random() + "");
@@ -111,7 +121,7 @@ public class DBConnectionPane extends BorderPane {
                     query = query.replace("#", Math.random() + "");
                     statement.addBatch(query);
                 }
-                statement.executeBatch();
+                statement.executeBatch();   // perform batch update
             }
             catch (Exception exception)
             {
@@ -123,14 +133,16 @@ public class DBConnectionPane extends BorderPane {
             center.appendText("The elapsed Time is " + (end - start) + "\n\n");
         });
 
+
+        // set action for non-batch update button
         nonBatchUpdate.setOnAction(e ->
         {
             status.setText("");
             long start = System.currentTimeMillis();
-            for (int i = 0; i < 1_000; i++)
-            {
-                try
-                {
+            // creates loop update
+            for (int i = 0; i < 1_000; i++) {
+                try {
+                    // creates statement and updates
                     Statement statement = connection.createStatement();
                     String query = QUERY.replace("!", Math.random() + "");
                     query = query.replace("@", Math.random() + "");
